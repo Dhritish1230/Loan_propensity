@@ -1,11 +1,12 @@
 import hashlib
 import json
+import os
 from pathlib import Path
 
 import pandas as pd
 
 
-ROOT = Path(r"C:\Users\m\Desktop\PROJECT INTERNSHIP")
+ROOT = Path(os.getenv("LOAN_PROPENSITY_WORKSPACE", Path(__file__).resolve().parents[2])).resolve()
 OUT = ROOT / "powerbi_job_submission"
 SOURCE = ROOT / "multi_month_training" / "test_outputs" / "april_t1_evaluated_predictions.csv"
 REPORT = ROOT / "multi_month_training" / "test_outputs" / "april_labeled_evaluation_report.json"

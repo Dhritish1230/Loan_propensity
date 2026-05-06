@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import sys
 import uuid
@@ -11,19 +12,20 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score
 
 
-ROOT = Path(r"C:\Users\m\Desktop\PROJECT INTERNSHIP")
-MT_DIR = ROOT / "multi_month_training"
-LOAN_API_DIR = ROOT / "loan-api"
-OUTPUT_DIR = MT_DIR / "dashboard_outputs"
+THIS_FILE = Path(__file__).resolve()
+MT_DIR = THIS_FILE.parent
+SRC_DIR = MT_DIR.parent
+REPO_ROOT = SRC_DIR.parent
+MODEL_DIR = Path(os.getenv("LOAN_PROPENSITY_MODEL_DIR", REPO_ROOT / "models")).resolve()
+OUTPUT_DIR = Path(os.getenv("LOAN_PROPENSITY_OUTPUT_DIR", REPO_ROOT / "dashboard_outputs")).resolve()
 
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
 if str(MT_DIR) not in sys.path:
     sys.path.insert(0, str(MT_DIR))
 
 from aggregate_call_sequence_features import SEQUENCE_FEATURES  # noqa: E402
 from evaluate_model_slice import RAW_CALL_FEATURES  # noqa: E402
-from run_stage_model_experiments import add_t1_enhancements  # noqa: E402
 
 
 USER_CATEGORICAL_FEATURES = [
@@ -50,6 +52,14 @@ USER_NUMERIC_FEATURES = [
     "has_expiry_date",
 ]
 USER_FEATURES = USER_CATEGORICAL_FEATURES + USER_NUMERIC_FEATURES
+T1_BASE_NUMERIC_FEATURES = [
+    "age",
+    "decile",
+    "total_calls",
+    "answered_calls",
+    "answered_rate",
+    "avg_call_duration",
+]
 
 CALL_FIRST_COLUMNS = [
     "call_id",
@@ -604,6 +614,40 @@ def merge_call_features(users: pd.DataFrame, call_path: Path | None, chunksize: 
     return out, call_info
 
 
+def add_t1_enhancements(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.copy()
+    for col in set(T1_BASE_NUMERIC_FEATURES + RAW_CALL_FEATURES + SEQUENCE_FEATURES):
+        if col not in out.columns:
+            out[col] = 0
+        out[col] = pd.to_numeric(out[col], errors="coerce").fillna(0)
+
+    out["total_calls_log1p"] = np.log1p(out["total_calls"].clip(lower=0))
+    out["answered_calls_log1p"] = np.log1p(out["answered_calls"].clip(lower=0))
+    out["avg_call_duration_log1p"] = np.log1p(out["avg_call_duration"].clip(lower=0))
+    out["raw_total_calls_log1p"] = np.log1p(out["raw_total_calls"].clip(lower=0))
+    out["raw_total_duration_log1p"] = np.log1p(out["raw_total_duration"].clip(lower=0))
+    out["unanswered_calls"] = (out["total_calls"] - out["answered_calls"]).clip(lower=0)
+    out["unanswered_rate"] = np.where(out["total_calls"] > 0, out["unanswered_calls"] / out["total_calls"], 0)
+    out["duration_per_answered_call"] = np.where(
+        out["answered_calls"] > 0,
+        out["avg_call_duration"] * out["total_calls"] / out["answered_calls"],
+        0,
+    )
+    out["raw_duration_per_answered_call"] = np.where(
+        out["raw_status_answered_calls"] > 0,
+        out["raw_total_duration"] / out["raw_status_answered_calls"],
+        0,
+    )
+    out["has_any_call"] = (out["total_calls"] > 0).astype(int)
+    out["has_answered_call"] = (out["answered_calls"] > 0).astype(int)
+    out["has_10s_avg_call"] = (out["avg_call_duration"] >= 10).astype(int)
+    out["has_30s_avg_call"] = (out["avg_call_duration"] >= 30).astype(int)
+    out["has_60s_avg_call"] = (out["avg_call_duration"] >= 60).astype(int)
+    out["raw_answered_x_duration"] = out["raw_status_answered_share"] * out["raw_avg_duration"]
+    out["raw_outbound_x_answered_share"] = out["raw_type_outbound_share"] * out["raw_status_answered_share"]
+    return out
+
+
 def priority_band(score: float) -> str:
     if score >= 0.90:
         return "Very High"
@@ -783,10 +827,10 @@ def metrics_if_labeled(df: pd.DataFrame, score_col: str) -> dict | None:
 
 
 def load_models() -> tuple[object, object, list[str], list[str]]:
-    t0_model = joblib.load(LOAN_API_DIR / "loan_model_t0_call_targeting_mixed_hybrid.pkl")
-    t1_model = joblib.load(LOAN_API_DIR / "loan_model_t1_sequence_mixed_hybrid.pkl")
-    t0_features = joblib.load(LOAN_API_DIR / "feature_columns_t0_call_targeting_mixed_hybrid.pkl")
-    t1_features = joblib.load(LOAN_API_DIR / "feature_columns_t1_sequence_mixed_hybrid.pkl")
+    t0_model = joblib.load(MODEL_DIR / "loan_model_t0_call_targeting_mixed_hybrid.pkl")
+    t1_model = joblib.load(MODEL_DIR / "loan_model_t1_sequence_mixed_hybrid.pkl")
+    t0_features = joblib.load(MODEL_DIR / "feature_columns_t0_call_targeting_mixed_hybrid.pkl")
+    t1_features = joblib.load(MODEL_DIR / "feature_columns_t1_sequence_mixed_hybrid.pkl")
     return t0_model, t1_model, t0_features, t1_features
 
 
@@ -809,6 +853,7 @@ def score_raw_files(
     for col in set(t0_features + t1_features):
         if col not in scored.columns:
             scored[col] = 0
+    scored = scored.copy()
 
     scored["t0_call_targeting_score"] = t0_model.predict_proba(scored[t0_features])[:, 1]
     scored["t1_loan_conversion_score"] = t1_model.predict_proba(scored[t1_features])[:, 1]
@@ -883,8 +928,8 @@ def score_raw_files(
             "top_t1": str(t1_path),
         },
         "model_files": {
-            "t0": str(LOAN_API_DIR / "loan_model_t0_call_targeting_mixed_hybrid.pkl"),
-            "t1": str(LOAN_API_DIR / "loan_model_t1_sequence_mixed_hybrid.pkl"),
+            "t0": str(MODEL_DIR / "loan_model_t0_call_targeting_mixed_hybrid.pkl"),
+            "t1": str(MODEL_DIR / "loan_model_t1_sequence_mixed_hybrid.pkl"),
         },
     }
     (output_dir / f"{job_id}_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")

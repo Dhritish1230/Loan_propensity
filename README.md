@@ -35,6 +35,8 @@ src/
   per_call_behavior/           Per-call behavior analysis builder
   april_label_comparison/      Before-label vs after-label validation comparison builder
   powerbi_job_submission/      Power BI package builder
+models/                        Final T0/T1 joblib model artifacts and feature lists
+data_templates/                Safe example upload templates
 docs/                          Handover, governance, runbook, roadmap, and demo script
 reports/                       Portfolio-safe HTML/Markdown summaries
 powerbi/                       DAX measures and Power BI build guide
@@ -46,6 +48,7 @@ These documents are intended to make the project understandable, maintainable, a
 - [Handover Guide](docs/HANDOVER.md)
 - [Operations Runbook](docs/OPERATIONS_RUNBOOK.md)
 - [Model Governance](docs/MODEL_GOVERNANCE.md)
+- [Model Artifact Handover](docs/MODEL_ARTIFACTS.md)
 - [Roadmap](docs/ROADMAP.md)
 - [Five-Minute Demo Script](docs/DEMO_SCRIPT.md)
 - [Original Contributor Note](docs/ORIGINAL_CONTRIBUTOR_NOTE.md)
@@ -71,7 +74,16 @@ The best observed signals were:
 This supports a practical call strategy: call enough to create engagement, then use T1 for follow-up prioritization.
 
 ## Privacy Note
-Raw customer data, original monthly datasets, trained `.pkl` model files, and large prediction outputs are intentionally excluded from git.
+Raw customer data, original monthly datasets, Power BI binary files, and large prediction outputs are intentionally excluded from git.
+
+The final model artifacts needed for handover are included under `models/`.
+
+## Input Templates
+Safe example upload templates are provided under `data_templates/`:
+
+- `user_data_template.csv`
+- `call_data_template.csv`
+- `label_template_optional.csv`
 
 ## How To Run Dashboard Locally
 
@@ -80,6 +92,12 @@ python -m uvicorn src.multi_month_training.raw_prediction_dashboard:app --host 1
 ```
 
 Then open: http://127.0.0.1:8057
+
+The dashboard loads final model files from `models/` by default. To point it at another artifact folder:
+
+```powershell
+$env:LOAN_PROPENSITY_MODEL_DIR = "C:\path\to\models"
+```
 
 ## Requirements
 See `requirements.txt`.

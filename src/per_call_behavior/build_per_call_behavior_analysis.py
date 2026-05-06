@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -10,7 +11,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 
-ROOT = Path(r"C:\Users\m\Desktop\PROJECT INTERNSHIP")
+ROOT = Path(os.getenv("LOAN_PROPENSITY_WORKSPACE", Path(__file__).resolve().parents[2])).resolve()
 SOURCE = ROOT / "multi_month_training" / "test_outputs" / "april_t1_evaluated_predictions.csv"
 OUT = ROOT / "per_call_behavior"
 LABEL = "converted_full"

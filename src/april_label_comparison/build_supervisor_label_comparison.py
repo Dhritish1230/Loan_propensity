@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -9,7 +10,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 
-ROOT = Path(r"C:\Users\m\Desktop\PROJECT INTERNSHIP")
+ROOT = Path(os.getenv("LOAN_PROPENSITY_WORKSPACE", Path(__file__).resolve().parents[2])).resolve()
 OUT = ROOT / "april_label_comparison"
 TEST_OUT = ROOT / "multi_month_training" / "test_outputs"
 

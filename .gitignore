@@ -18,6 +18,14 @@ venv/
 *.db
 *.zip
 
+# Final portable model artifacts and safe templates
+!models/
+!models/*.pkl
+!models/*.md
+!data_templates/
+!data_templates/*.csv
+!data_templates/*.md
+
 # Keep portfolio-safe small report HTML/Markdown/DAX
 !reports/*.md
 !reports/*.html

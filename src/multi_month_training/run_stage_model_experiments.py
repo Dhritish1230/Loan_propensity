@@ -1,6 +1,7 @@
 import argparse
 import json
 import sys
+import os
 from pathlib import Path
 
 import numpy as np
@@ -14,12 +15,17 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
 
 
-ROOT = Path(r"C:\Users\m\Desktop\PROJECT INTERNSHIP")
+ROOT = Path(os.getenv("LOAN_PROPENSITY_WORKSPACE", Path(__file__).resolve().parents[2])).resolve()
+SRC_DIR = Path(__file__).resolve().parents[1]
+CODE_DIR = Path(__file__).resolve().parent
 MT_DIR = ROOT / "multi_month_training"
 OUT_DIR = MT_DIR / "experiment_outputs"
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+for path_entry in [SRC_DIR, CODE_DIR]:
+    if str(path_entry) not in sys.path:
+        sys.path.insert(0, str(path_entry))
 if str(MT_DIR) not in sys.path:
     sys.path.insert(0, str(MT_DIR))
 

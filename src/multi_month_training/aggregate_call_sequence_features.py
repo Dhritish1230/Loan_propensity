@@ -1,12 +1,15 @@
 import argparse
 from collections import defaultdict
+import os
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 
-ROOT = Path(r"C:\Users\m\Desktop\PROJECT INTERNSHIP")
+ROOT = Path(os.getenv("LOAN_PROPENSITY_WORKSPACE", Path(__file__).resolve().parents[2])).resolve()
+SRC_DIR = Path(__file__).resolve().parents[1]
+CODE_DIR = Path(__file__).resolve().parent
 CALL_PATHS = {
     "OCT": ROOT / "hero_fincorp_loan_upselling_call_data_2025oct.csv",
     "DEC": ROOT / "datasets" / "hero_fincorp_loan_upselling_call_data_2025_dec_updated.csv",

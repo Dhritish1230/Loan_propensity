@@ -46,15 +46,18 @@ This is the core proof that prediction and validation were separated.
 - `src/per_call_behavior/build_per_call_behavior_analysis.py`: per-call behavior analysis.
 - `src/april_label_comparison/build_supervisor_label_comparison.py`: before-label vs after-label supervisor comparison.
 - `src/powerbi_job_submission/build_powerbi_package.py`: Power BI-ready package builder.
+- `models/`: final portable T0/T1 model artifacts and feature column lists.
+- `data_templates/`: safe upload templates for user data, call data, and optional labels.
 
 ## What Is Excluded From Git
 For privacy and size reasons, this repository intentionally excludes:
 
 - Raw customer/monthly data.
-- Trained model binaries such as `.pkl`.
 - Large scored prediction files.
 - Power BI `.pbix` files.
 - Excel/CSV output exports.
+
+The final `.pkl` model artifacts required to run the handover dashboard are included in `models/`.
 
 ## Production Readiness Position
 The current system is **business-pilot ready**, not fully autonomous production ready.

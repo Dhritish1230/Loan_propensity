@@ -1,0 +1,3 @@
+call_id,user_id,call_duration,call_type,call_time,call_endtime,created_at,modified_at,call_status,hangup_cause_code,flow,did,language
+CALL-00000001,USER-00000001,95,OUTBOUND,2026-04-03 10:15:00,2026-04-03 10:16:35,2026-04-03 10:15:00,2026-04-03 10:16:35,ANSWERED,16,personal,DID-001,hin
+CALL-00000002,USER-00000002,0,OUTBOUND,2026-04-03 12:20:00,2026-04-03 12:20:00,2026-04-03 12:20:00,2026-04-03 12:20:00,NOT_ANSWERED,31,business,DID-002,en

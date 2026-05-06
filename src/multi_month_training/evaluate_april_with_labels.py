@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -6,7 +7,9 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score
 
 
-ROOT = Path(r"C:\Users\m\Desktop\PROJECT INTERNSHIP")
+ROOT = Path(os.getenv("LOAN_PROPENSITY_WORKSPACE", Path(__file__).resolve().parents[2])).resolve()
+SRC_DIR = Path(__file__).resolve().parents[1]
+CODE_DIR = Path(__file__).resolve().parent
 APR_USER_PATH = ROOT / "april" / "hero_fincorp_loan_upselling_user_data_2026_april_updated.csv"
 APR_DIY_PATH = ROOT / "april" / "DIY_APRIL.csv"
 APR_SFDC_PATH = ROOT / "april" / "SFDC_APRIL.csv"
