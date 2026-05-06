@@ -22,9 +22,9 @@ Some parts of the project depend on business and data context that is not obviou
 
 If this project is extended or productionized, preserve the T0/T1 separation and leakage-safe validation workflow.
 
-## Contact Placeholder
-Original project contributor: `ADD_NAME_HERE`
+## Contributor Contact
+Original project contributor: `Dhritish Bora`
 
-Preferred contact: `ADD_EMAIL_OR_LINKEDIN_HERE`
+Preferred contact: `dhritishbora.career@gmail.com`
 
-Replace the placeholders before sharing this repository outside the organization.
+Keep this note with the project handover so future maintainers know whom to contact for context.
