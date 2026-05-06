@@ -45,6 +45,7 @@ powerbi/                       DAX measures and Power BI build guide
 ## Handover and Operating Docs
 These documents are intended to make the project understandable, maintainable, and business-ready:
 
+- [Full Project Documentation](docs/PROJECT_DOCUMENTATION.md)
 - [Handover Guide](docs/HANDOVER.md)
 - [Operations Runbook](docs/OPERATIONS_RUNBOOK.md)
 - [Model Governance](docs/MODEL_GOVERNANCE.md)
