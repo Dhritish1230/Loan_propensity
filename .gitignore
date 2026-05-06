@@ -1,0 +1,42 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Data and private artifacts
+*.csv
+*.xlsx
+*.xls
+*.pbix
+*.pkl
+*.joblib
+*.parquet
+*.feather
+*.sqlite
+*.db
+*.zip
+
+# Keep portfolio-safe small report HTML/Markdown/DAX
+!reports/*.md
+!reports/*.html
+!powerbi/*.md
+!powerbi/*.dax
+
+# Logs and outputs
+logs/
+outputs/
+test_outputs/
+dashboard_outputs/
+call_agg_cache/
+raw_call_cache/
+sequence_call_cache/
+dedup_cache/
+catboost_info/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

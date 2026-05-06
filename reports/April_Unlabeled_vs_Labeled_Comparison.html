@@ -1,0 +1,41 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>April Prediction Label Comparison</title>
+<style>
+body{margin:0;font-family:Bahnschrift,Candara,'Trebuchet MS',sans-serif;color:#102027;background:linear-gradient(135deg,#fff9ec,#eaf7f2)}
+.wrap{width:min(1280px,calc(100% - 34px));margin:0 auto;padding:32px 0 60px}
+.hero,.panel,.card{background:rgba(255,255,255,.84);border:1px solid rgba(16,32,39,.12);border-radius:28px;box-shadow:0 24px 70px rgba(23,50,76,.13);padding:24px;margin-top:18px}
+h1,h2{font-family:Georgia,'Palatino Linotype',serif;letter-spacing:-.035em}h1{font-size:60px;line-height:.95;margin:0}p{color:#60717c;line-height:1.55}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card strong{display:block;font-size:38px;margin-top:8px}.card span{color:#60717c}
+table{width:100%;border-collapse:collapse;background:white;border-radius:18px;overflow:hidden}th,td{padding:11px;border-bottom:1px solid #edf1f0;text-align:left}th{background:#102027;color:white;font-size:12px;text-transform:uppercase;letter-spacing:.08em}.converted{background:#e7f8ee}
+.pill{display:inline-block;border-radius:999px;padding:7px 12px;background:#dff7e8;font-weight:900;color:#0f5132}@media(max-width:900px){.grid{grid-template-columns:1fr}h1{font-size:40px}}
+</style></head><body><main class="wrap">
+<section class="hero"><p style="font-weight:900;color:#0f766e;text-transform:uppercase;letter-spacing:.16em">Supervisor validation view</p><h1>April predictions stayed unchanged after labels</h1><p>We scored April first without DIY/SFDC labels. After labels were joined, the top-100 T1 list had the same users, same order, and same prediction scores. Labels only revealed which predicted users actually converted.</p></section>
+<section class="grid">
+<article class="card"><span>Same top-100 users</span><strong>True</strong></article>
+<article class="card"><span>Same order</span><strong>True</strong></article>
+<article class="card"><span>Same scores</span><strong>True</strong></article>
+<article class="card"><span>Converted in top 100</span><strong>53/100</strong></article>
+</section>
+<section class="panel"><h2>What this proves</h2><p><span class="pill">Clean validation</span></p><p>The model did not use conversion labels while ranking April users. The labels were added afterward only to check outcomes. This is why the prediction ranking and scores are identical before and after label validation.</p></section>
+<section class="panel"><h2>Top 20 Comparison</h2><table><thead><tr><th>Rank Before Labels</th><th>UID</th><th>Prediction Score</th><th>Outcome After Labels</th><th>Source</th><th>Total Calls</th><th>Answered</th><th>Avg Duration</th></tr></thead><tbody><tr class="converted">
+<td>1</td><td>CSD-55126913</td><td>0.994534</td><td>Converted</td><td>SFDC</td><td>6</td><td>3</td><td>61.5s</td></tr><tr class="converted">
+<td>2</td><td>CSD-55326129</td><td>0.994243</td><td>Converted</td><td>SFDC</td><td>6</td><td>3</td><td>54.7s</td></tr><tr class="converted">
+<td>3</td><td>CSD-55123392</td><td>0.994184</td><td>Converted</td><td>SFDC</td><td>6</td><td>3</td><td>42.5s</td></tr><tr class="converted">
+<td>4</td><td>CSD-55318098</td><td>0.994118</td><td>Converted</td><td>SFDC</td><td>6</td><td>4</td><td>74.3s</td></tr><tr class="">
+<td>5</td><td>CSD-55083406</td><td>0.993987</td><td>Not Converted</td><td>Not Converted</td><td>6</td><td>5</td><td>49.3s</td></tr><tr class="converted">
+<td>6</td><td>CSD-55101950</td><td>0.993892</td><td>Converted</td><td>SFDC</td><td>7</td><td>5</td><td>99.3s</td></tr><tr class="converted">
+<td>7</td><td>CSD-55102480</td><td>0.993831</td><td>Converted</td><td>SFDC</td><td>7</td><td>5</td><td>41.9s</td></tr><tr class="converted">
+<td>8</td><td>CSD-55113521</td><td>0.993812</td><td>Converted</td><td>DIY</td><td>6</td><td>4</td><td>46.3s</td></tr><tr class="converted">
+<td>9</td><td>CSD-55321626</td><td>0.993723</td><td>Converted</td><td>SFDC</td><td>6</td><td>3</td><td>50.8s</td></tr><tr class="">
+<td>10</td><td>CSD-55416653</td><td>0.993719</td><td>Not Converted</td><td>Not Converted</td><td>7</td><td>4</td><td>57.0s</td></tr><tr class="converted">
+<td>11</td><td>CSD-55071244</td><td>0.993713</td><td>Converted</td><td>SFDC</td><td>7</td><td>5</td><td>45.0s</td></tr><tr class="">
+<td>12</td><td>CSD-55063400</td><td>0.993645</td><td>Not Converted</td><td>Not Converted</td><td>5</td><td>3</td><td>95.6s</td></tr><tr class="converted">
+<td>13</td><td>CSD-55083147</td><td>0.993639</td><td>Converted</td><td>SFDC</td><td>6</td><td>4</td><td>88.3s</td></tr><tr class="">
+<td>14</td><td>CSD-55063578</td><td>0.993596</td><td>Not Converted</td><td>Not Converted</td><td>7</td><td>5</td><td>75.0s</td></tr><tr class="converted">
+<td>15</td><td>CSD-55323642</td><td>0.993563</td><td>Converted</td><td>SFDC</td><td>5</td><td>4</td><td>81.2s</td></tr><tr class="converted">
+<td>16</td><td>CSD-55321725</td><td>0.993535</td><td>Converted</td><td>DIY</td><td>6</td><td>4</td><td>120.5s</td></tr><tr class="">
+<td>17</td><td>CSD-55116956</td><td>0.993468</td><td>Not Converted</td><td>Not Converted</td><td>5</td><td>4</td><td>83.2s</td></tr><tr class="">
+<td>18</td><td>CSD-55115932</td><td>0.993184</td><td>Not Converted</td><td>Not Converted</td><td>5</td><td>3</td><td>31.2s</td></tr><tr class="converted">
+<td>19</td><td>CSD-55142784</td><td>0.993125</td><td>Converted</td><td>DIY</td><td>5</td><td>3</td><td>39.0s</td></tr><tr class="">
+<td>20</td><td>CSD-55319443</td><td>0.993095</td><td>Not Converted</td><td>Not Converted</td><td>6</td><td>4</td><td>69.5s</td></tr></tbody></table></section>
+</main></body></html>
